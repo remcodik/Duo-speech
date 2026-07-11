@@ -16,6 +16,12 @@ window.LINGO = window.LINGO || {};
 
   function priceFor(model) { return MODELS[model] || MODELS["claude-opus-4-8"]; }
 
+  /* Suggested model per level: beginner sentences are simple, so the cheap fast
+     model coaches them well; intermediate errors get subtler and earn Opus. */
+  function suggestModel(level) {
+    return level === "beginner" ? "claude-haiku-4-5" : "claude-opus-4-8";
+  }
+
   /* Cost of one completed call, from the API's real usage block. */
   function costOfUsage(model, usage) {
     const p = priceFor(model);
@@ -57,5 +63,5 @@ window.LINGO = window.LINGO || {};
     return "$" + v.toFixed(2);
   }
 
-  LINGO.cost = { MODELS, priceFor, costOfUsage, record, estimateExchangeUSD, capReached, fmtUSD, session };
+  LINGO.cost = { MODELS, priceFor, suggestModel, costOfUsage, record, estimateExchangeUSD, capReached, fmtUSD, session };
 })();

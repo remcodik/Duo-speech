@@ -27,6 +27,9 @@
       if (!langBtn) return;
       LINGO.state.data.lang = langBtn.dataset.lang;
       LINGO.state.data.level = document.querySelector(".level-btn.selected").dataset.level;
+      if (!LINGO.state.data.settings.modelChosenByUser) {
+        LINGO.state.data.settings.model = LINGO.cost.suggestModel(LINGO.state.data.level);
+      }
       LINGO.state.save();
       LINGO.ui.refreshTopbar();
       goMap();
@@ -119,6 +122,9 @@
     $("btn-settings").addEventListener("click", () => LINGO.ui.openSettings());
     $("btn-settings-close").addEventListener("click", () => {
       LINGO.state.setApiKey($("api-key-input").value.trim());
+      if ($("model-select").value !== LINGO.state.data.settings.model) {
+        LINGO.state.data.settings.modelChosenByUser = true; // manual override sticks
+      }
       LINGO.state.data.settings.model = $("model-select").value;
       const cap = parseFloat($("cap-input").value);
       if (isFinite(cap) && cap > 0) LINGO.state.data.settings.capUSD = cap;

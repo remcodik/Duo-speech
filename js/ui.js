@@ -471,10 +471,11 @@ window.LINGO = window.LINGO || {};
     $("api-key-input").value = LINGO.state.getApiKey();
     const sel = $("model-select");
     sel.innerHTML = "";
+    const suggested = LINGO.cost.suggestModel(d.level);
     for (const [id, m] of Object.entries(LINGO.cost.MODELS)) {
       const opt = document.createElement("option");
       opt.value = id;
-      opt.textContent = m.label;
+      opt.textContent = m.label + (id === suggested ? " · ⭐ suggested for your level" : "");
       sel.appendChild(opt);
     }
     sel.value = d.settings.model;

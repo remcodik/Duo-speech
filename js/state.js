@@ -19,6 +19,7 @@ window.LINGO = window.LINGO || {};
     badges: [],               // earned badge ids
     settings: {
       model: "claude-opus-4-8",
+      modelChosenByUser: false,  // once the player picks a model manually, we stop auto-suggesting
       capUSD: 1.0,
     },
   });
