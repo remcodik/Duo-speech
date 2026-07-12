@@ -25,7 +25,15 @@ html, body {
     radial-gradient(circle at 15% 10%, #fef3c7 0, transparent 30%),
     radial-gradient(circle at 90% 20%, #a5f3fc 0, transparent 35%),
     linear-gradient(180deg, var(--sky) 0%, #e0f2fe 55%, #fef9c3 100%);
+  background-attachment: fixed;
   min-height: 100vh;
+  /* iOS standalone webapp: fill the notch/home-indicator area with the theme
+     color so there are no white bars, and never scroll sideways. */
+  overflow-x: hidden;
+}
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .hidden { display: none !important; }

@@ -22,7 +22,7 @@ jobs:
       - name: Push site to gh-pages
         run: |
           mkdir -p /tmp/site
-          cp -r index.html css js /tmp/site/
+          cp -r index.html css js icons manifest.webmanifest /tmp/site/
           touch /tmp/site/.nojekyll
           cd /tmp/site
           git init -b gh-pages
