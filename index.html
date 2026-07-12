@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://api.anthropic.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Lingo Isle — talk your way around the island</title>
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Lingo Isle">
+<meta name="theme-color" content="#12b5b0">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ==================== TOP BAR ==================== -->
+<header id="topbar" class="hidden">
+  <button id="btn-home" class="chip" title="Island map">🏝️ <span id="topbar-lang"></span></button>
+  <div class="topbar-right">
+    <span id="xp-chip" class="chip xp">✨ <span id="xp-value">0</span> XP</span>
+    <button id="btn-progress" class="chip" title="Your progress">📈</button>
+    <button id="btn-settings" class="chip" title="Settings">⚙️</button>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ==================== WELCOME / SETUP ==================== -->
+  <section id="screen-welcome" class="screen active">
+    <div class="welcome-card">
+      <div class="logo-bounce">🏝️</div>
+      <h1>Lingo Isle</h1>
+      <p class="tagline">Talk your way around the island. No streaks — just play.</p>
+
+      <h2 class="pick-title">Which language do you want to speak?</h2>
+      <div id="lang-picker" class="lang-picker"></div>
+
+      <h2 class="pick-title">How much do you already know?</h2>
+      <div class="level-picker">
+        <button class="level-btn selected" data-level="beginner">🐣 Just starting</button>
+        <button class="level-btn" data-level="elementary">🌱 I know a little</button>
+        <button class="level-btn" data-level="intermediate">🦜 Conversational</button>
+        <button class="level-btn" data-level="advanced">🏄 Pretty confident</button>
+      </div>
+
+      <button id="btn-start" class="big-btn" disabled>Sail to the island →</button>
+      <p class="fineprint">Free to play. Optional AI coach (bring your own Claude API key) — cost is always shown.</p>
+    </div>
+  </section>
+
+  <!-- ==================== ISLAND MAP ==================== -->
+  <section id="screen-map" class="screen">
+    <h2 class="map-title">Where do you want to go?</h2>
+    <div id="island-map"></div>
+    <div class="map-footer">
+      <button id="btn-minigames" class="big-btn secondary">🎮 Mini-games</button>
+      <div id="ai-status-pill" class="ai-pill"></div>
+    </div>
+  </section>
+
+  <!-- ==================== CONVERSATION ==================== -->
+  <section id="screen-convo" class="screen">
+    <div class="convo-header">
+      <button id="btn-convo-back" class="chip">← Map</button>
+      <div id="mission-banner">
+        <span id="mission-text"></span>
+        <div id="mission-stars"></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div id="avatar" class="avatar" data-expression="happy">
+        <div class="avatar-face"><span id="avatar-emoji">😀</span></div>
+        <div id="avatar-name" class="avatar-name"></div>
+      </div>
+      <div id="npc-bubble" class="bubble npc">
+        <p id="npc-text"></p>
+        <div class="bubble-tools">
+          <button id="btn-replay" class="tool-btn" title="Hear it again">🔊</button>
+          <button id="btn-translate" class="tool-btn" title="Show translation">🇬🇧</button>
+          <button id="btn-hint" class="tool-btn" title="Hint">💡</button>
+        </div>
+        <p id="npc-translation" class="translation hidden"></p>
+        <p id="npc-hint" class="hint hidden"></p>
+      </div>
+    </div>
+
+    <div id="feedback-area"></div>
+
+    <div class="player-bubble-wrap">
+      <div id="player-bubble" class="bubble player hidden"><p id="player-text"></p></div>
+    </div>
+
+    <div class="input-bar">
+      <button id="btn-mic" class="mic-btn" title="Hold to talk">
+        <span class="mic-icon">🎤</span>
+      </button>
+      <div class="text-input-wrap">
+        <input id="text-input" type="text" autocomplete="off" placeholder="…or type your answer">
+        <button id="btn-send" class="send-btn">➤</button>
+      </div>
+    </div>
+    <p id="mic-status" class="mic-status"></p>
+  </section>
+
+  <!-- ==================== MINI-GAMES ==================== -->
+  <section id="screen-games" class="screen">
+    <div class="convo-header">
+      <button id="btn-games-back" class="chip">← Map</button>
+      <h2>Mini-games <span class="free-tag">100% free</span></h2>
+    </div>
+    <div class="game-picker">
+      <button class="game-card" data-game="echo">
+        <span class="game-emoji">🦜</span>
+        <span class="game-name">Echo Battle</span>
+        <span class="game-desc">Repeat the phrase. The parrot judges you.</span>
+      </button>
+      <button class="game-card" data-game="salad">
+        <span class="game-emoji">🥗</span>
+        <span class="game-name">Word Salad</span>
+        <span class="game-desc">Un-scramble the sentence before it wilts.</span>
+      </button>
+    </div>
+    <div id="game-arena" class="hidden">
+      <div id="game-prompt"></div>
+      <div id="game-board"></div>
+      <div id="game-result"></div>
+      <div class="game-controls">
+        <button id="btn-game-mic" class="mic-btn small hidden"><span class="mic-icon">🎤</span></button>
+        <button id="btn-game-hear" class="big-btn secondary hidden">🔊 Hear it</button>
+        <button id="btn-game-check" class="big-btn hidden">Check</button>
+        <button id="btn-game-next" class="big-btn hidden">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROGRESS ==================== -->
+  <section id="screen-progress" class="screen">
+    <div class="convo-header">
+      <button id="btn-progress-back" class="chip">← Map</button>
+      <h2>Your island is growing 🌱</h2>
+    </div>
+    <div id="garden"></div>
+    <div class="skills">
+      <div class="skill"><span class="skill-label">🗣️ Speaking</span><div class="meter"><div id="meter-speaking" class="meter-fill"></div></div></div>
+      <div class="skill"><span class="skill-label">📐 Grammar</span><div class="meter"><div id="meter-grammar" class="meter-fill"></div></div></div>
+      <div class="skill"><span class="skill-label">📚 Words</span><div class="meter"><div id="meter-vocab" class="meter-fill"></div></div></div>
+    </div>
+    <div id="badges" class="badges"></div>
+    <h3 class="wordbook-title">Word collection</h3>
+    <div id="wordbook" class="wordbook"></div>
+    <div id="cost-report" class="cost-report"></div>
+  </section>
+
+</main>
+
+<!-- ==================== SETTINGS MODAL ==================== -->
+<div id="modal-backdrop" class="hidden">
+  <div id="settings-modal" role="dialog" aria-label="Settings">
+    <h2>⚙️ Settings</h2>
+
+    <h3>🤖 AI coach</h3>
+    <p class="settings-note">The AI plays the characters and coaches your grammar. It runs on
+    <strong>your own Claude API key</strong> — you pay Anthropic directly, and this app shows every cent.
+    Without a key the island still works with scripted characters (free, simpler feedback).</p>
+
+    <label class="field-label" for="api-key-input">Claude API key</label>
+    <div class="key-row">
+      <input id="api-key-input" type="password" placeholder="sk-ant-…" autocomplete="off">
+      <button id="btn-key-clear" class="chip">Clear</button>
+    </div>
+    <p class="settings-fineprint">Stored only in this browser (localStorage), sent only to api.anthropic.com.
+    Tip: create a dedicated key with a spend limit at console.anthropic.com — you can revoke it anytime.</p>
+
+    <label class="field-label" for="model-select">Model &amp; price</label>
+    <select id="model-select"></select>
+    <p id="model-price-note" class="settings-fineprint"></p>
+
+    <label class="field-label" for="cap-input">Session spend cap ($)</label>
+    <input id="cap-input" type="number" min="0.05" step="0.05">
+    <p class="settings-fineprint">AI calls stop when the session total reaches the cap. Scripted mode keeps working.</p>
+
+    <div id="cost-meter" class="cost-meter"></div>
+
+    <h3>🎙️ Voice &amp; privacy</h3>
+    <p class="settings-note" id="speech-support-note"></p>
+    <p class="settings-fineprint">Heads-up: in some browsers (e.g. Chrome) speech recognition sends your
+    audio to the browser vendor's servers to transcribe. In AI mode your <em>text</em> is sent to Anthropic.
+    Prefer full privacy? Type your answers and play scripted mode — nothing leaves your device.</p>
+
+    <div class="modal-actions">
+      <button id="btn-reset" class="chip danger">Reset all progress</button>
+      <button id="btn-settings-close" class="big-btn">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="hidden"></div>
+<div id="confetti-layer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/cost.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

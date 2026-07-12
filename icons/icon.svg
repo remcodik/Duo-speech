@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Variant B: "Chatty Parrot" — bold mascot with typing-dots bubble -->
+  <defs>
+    <linearGradient id="bgB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12b5b0"/>
+      <stop offset="1" stop-color="#0b7fa6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bgB)"/>
+  <!-- sun -->
+  <circle cx="810" cy="200" r="120" fill="#ffd75e" opacity="0.9"/>
+  <!-- leaves bottom -->
+  <g fill="#0e9b6c" opacity="0.85">
+    <path d="M-40 1024 C 160 850 320 830 520 900 C 330 940 180 990 60 1024 Z"/>
+    <path d="M1064 1024 C 880 870 720 850 540 910 C 720 950 880 1000 980 1024 Z"/>
+  </g>
+  <!-- parrot body -->
+  <g>
+    <!-- tail -->
+    <path d="M430 760 C 380 900 330 960 250 1010 C 320 1010 420 980 480 900 Z" fill="#2f6df6"/>
+    <!-- body -->
+    <ellipse cx="500" cy="640" rx="230" ry="270" fill="#ff5d5d"/>
+    <!-- wing -->
+    <path d="M370 600 C 300 690 300 790 360 860 C 430 820 470 740 470 650 C 440 610 400 590 370 600 Z" fill="#2f6df6"/>
+    <path d="M400 620 C 350 690 350 760 392 812" fill="none" stroke="#1e50c4" stroke-width="18" stroke-linecap="round"/>
+    <!-- belly -->
+    <ellipse cx="560" cy="700" rx="130" ry="170" fill="#ffd75e"/>
+    <!-- head -->
+    <circle cx="560" cy="400" r="190" fill="#ff5d5d"/>
+    <!-- crest -->
+    <path d="M480 240 C 470 180 500 130 550 110 C 535 160 545 200 560 230 Z" fill="#ffb238"/>
+    <path d="M545 225 C 550 165 590 120 645 110 C 620 160 620 205 625 235 Z" fill="#ff8c42"/>
+    <!-- eye patch -->
+    <circle cx="630" cy="390" r="92" fill="#fffdf6"/>
+    <circle cx="648" cy="392" r="40" fill="#22313f"/>
+    <circle cx="662" cy="378" r="13" fill="#fff"/>
+    <!-- beak -->
+    <path d="M700 470 C 780 460 830 500 830 550 C 830 610 770 640 700 630 C 720 580 720 520 700 470 Z" fill="#ffb238"/>
+    <path d="M706 560 C 760 556 800 574 806 600 C 780 626 730 630 700 622 Z" fill="#e8871e"/>
+  </g>
+  <!-- speech bubble with typing dots -->
+  <g>
+    <path d="M96 210 C 96 130 160 84 268 84 C 376 84 440 130 440 210 C 440 290 376 336 268 336 C 246 336 226 334 208 330 L 130 382 L 148 306 C 114 282 96 250 96 210 Z"
+          fill="#fffdf6" stroke="#083d52" stroke-width="20"/>
+    <circle cx="196" cy="212" r="26" fill="#ff5d5d"/>
+    <circle cx="268" cy="212" r="26" fill="#ffb238"/>
+    <circle cx="340" cy="212" r="26" fill="#12b5b0"/>
+  </g>
+</svg>
