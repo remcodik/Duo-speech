@@ -16,10 +16,13 @@ window.LINGO = window.LINGO || {};
 
   function priceFor(model) { return MODELS[model] || MODELS["claude-opus-4-8"]; }
 
-  /* Suggested model per level: beginner sentences are simple, so the cheap fast
-     model coaches them well; intermediate errors get subtler and earn Opus. */
+  /* Suggested model per level: simple sentences are coached fine by the cheap
+     fast model; the subtler the errors get, the more the stronger models earn
+     their price. The player can always override in Settings. */
   function suggestModel(level) {
-    return level === "beginner" ? "claude-haiku-4-5" : "claude-opus-4-8";
+    if (level === "beginner" || level === "elementary") return "claude-haiku-4-5";
+    if (level === "intermediate") return "claude-sonnet-5";
+    return "claude-opus-4-8"; // advanced
   }
 
   /* Cost of one completed call, from the API's real usage block. */

@@ -34,6 +34,10 @@ window.LINGO = window.LINGO || {};
         data = Object.assign(DEFAULTS(), saved);
         data.settings = Object.assign(DEFAULTS().settings, saved.settings || {});
         data.skills = Object.assign(DEFAULTS().skills, saved.skills || {});
+        // Saved state from an older content set: re-run setup if the language
+        // or level no longer exists (e.g. after the sv/it/ja switch).
+        if (data.lang && !LINGO.LANGUAGES[data.lang]) data.lang = null;
+        if (!LINGO.LEVELS[data.level]) data.level = "beginner";
       }
     } catch (e) { /* private browsing / corrupt state: run stateless */ }
     return data;

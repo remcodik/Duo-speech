@@ -127,13 +127,23 @@ window.LINGO = window.LINGO || {};
     LINGO.ui.showEcho(game.phrase);
   }
 
-  /* Score = fraction of target words present in the transcript. */
+  /* Score = fraction of target words present in the transcript.
+     Japanese speech recognition returns unspaced text, so ja is scored by
+     character overlap instead of word overlap. */
   function scoreEcho(transcript) {
     const norm = LINGO.ai.normalize;
-    const target = norm(game.phrase.text).split(" ").filter(Boolean);
-    const said = new Set(norm(transcript).split(" ").filter(Boolean));
-    const hits = target.filter((w) => said.has(w)).length;
-    const pct = Math.round((hits / target.length) * 100);
+    let pct;
+    if (LINGO.state.data.lang === "ja") {
+      const target = [...norm(game.phrase.text).replace(/\s+/g, "")];
+      const saidChars = new Set([...norm(transcript).replace(/\s+/g, "")]);
+      const hits = target.filter((c) => saidChars.has(c)).length;
+      pct = target.length ? Math.round((hits / target.length) * 100) : 0;
+    } else {
+      const target = norm(game.phrase.text).split(" ").filter(Boolean);
+      const said = new Set(norm(transcript).split(" ").filter(Boolean));
+      const hits = target.filter((w) => said.has(w)).length;
+      pct = Math.round((hits / target.length) * 100);
+    }
     LINGO.state.data.miniGames++;
     LINGO.state.bumpSkill("speaking", pct);
     LINGO.state.addXP(Math.round(pct / 10));

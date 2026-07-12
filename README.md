@@ -12,7 +12,8 @@ No streaks, no guilt — your island just grows as you play.
 - 📈 **Progress without pressure** — XP grows your island, stars per mission, skill meters for
   Speaking / Grammar / Words, badges, and a word collection
 
-Learnable languages: **Spanish, French, German, English** (UI in English).
+Learnable languages: **Swedish, Italian, Japanese** (UI in English), with four levels
+from "just starting" (A1) to "pretty confident" (B2–C1).
 
 ## Run it
 

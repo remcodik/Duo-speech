@@ -53,7 +53,7 @@ window.LINGO = window.LINGO || {};
 
   function systemPrompt(scenario, langCode) {
     const lang = LINGO.LANGUAGES[langCode].name;
-    const level = LINGO.state.data.level === "beginner" ? "absolute beginner (CEFR A1)" : "lower intermediate (CEFR A2-B1)";
+    const level = (LINGO.LEVELS[LINGO.state.data.level] || LINGO.LEVELS.beginner).cefr;
     return [
       `You are ${scenario.character.persona}, a character in "Lingo Isle", a playful ${lang}-learning game on a tropical island.`,
       `Scene: ${scenario.name}. The player's mission: ${scenario.mission}.`,

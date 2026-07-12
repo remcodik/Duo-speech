@@ -1,13 +1,21 @@
-/* Lingo Isle — static game content: languages, scenarios, scripted dialogue, mini-games. */
+/* Lingo Isle — static game content: languages, scenarios, scripted dialogue, mini-games.
+   Japanese content is authored with spaces between words (wakachigaki, common in
+   learner materials) so word-based games work; comparison logic strips spaces. */
 "use strict";
 
 window.LINGO = window.LINGO || {};
 
 LINGO.LANGUAGES = {
-  es: { name: "Spanish", flag: "🇪🇸", bcp47: "es-ES" },
-  fr: { name: "French",  flag: "🇫🇷", bcp47: "fr-FR" },
-  de: { name: "German",  flag: "🇩🇪", bcp47: "de-DE" },
-  en: { name: "English", flag: "🇬🇧", bcp47: "en-GB" },
+  sv: { name: "Swedish",  flag: "🇸🇪", bcp47: "sv-SE" },
+  it: { name: "Italian",  flag: "🇮🇹", bcp47: "it-IT" },
+  ja: { name: "Japanese", flag: "🇯🇵", bcp47: "ja-JP" },
+};
+
+LINGO.LEVELS = {
+  beginner:     { emoji: "🐣", label: "Just starting",   cefr: "an absolute beginner (CEFR A1) — use very short, very simple sentences" },
+  elementary:   { emoji: "🌱", label: "I know a little", cefr: "an elementary learner (CEFR A2) — simple sentences, everyday vocabulary" },
+  intermediate: { emoji: "🦜", label: "Conversational",  cefr: "an intermediate learner (CEFR B1) — natural but clear language" },
+  advanced:     { emoji: "🏄", label: "Pretty confident", cefr: "an advanced learner (CEFR B2-C1) — speak naturally and also coach style and nuance" },
 };
 
 /*
@@ -16,7 +24,7 @@ LINGO.LANGUAGES = {
  *   line:   what the character says, per language
  *   tr:     English translation
  *   hint:   suggestion of what to say, per language
- *   expect: keywords (lowercase, accent-insensitive) that count as success
+ *   expect: keywords (normalized: lowercase, accent-insensitive) counting as success
  */
 LINGO.SCENARIOS = [
   {
@@ -26,22 +34,22 @@ LINGO.SCENARIOS = [
     unlockStars: 0,
     steps: [
       {
-        line: { es: "¡Hola! Bienvenido al café. ¿Qué quieres beber?", fr: "Bonjour ! Bienvenue au café. Qu'est-ce que tu veux boire ?", de: "Hallo! Willkommen im Café. Was möchtest du trinken?", en: "Hi! Welcome to the café. What would you like to drink?" },
+        line: { sv: "Hej! Välkommen till kaféet. Vad vill du dricka?", it: "Ciao! Benvenuto al caffè. Cosa vuoi da bere?", ja: "こんにちは！カフェへようこそ。何を飲みますか？" },
         tr: "Hi! Welcome to the café. What do you want to drink?",
-        hint: { es: "Quiero un café, por favor", fr: "Je voudrais un café, s'il vous plaît", de: "Ich möchte einen Kaffee, bitte", en: "I would like a coffee, please" },
-        expect: { es: ["cafe", "te", "agua", "zumo", "leche", "quiero", "chocolate"], fr: ["cafe", "the", "eau", "jus", "lait", "voudrais", "chocolat"], de: ["kaffee", "tee", "wasser", "saft", "milch", "mochte", "möchte"], en: ["coffee", "tea", "water", "juice", "milk", "like", "chocolate"] },
+        hint: { sv: "Jag skulle vilja ha en kaffe, tack", it: "Vorrei un caffè, per favore", ja: "コーヒーをください" },
+        expect: { sv: ["kaffe", "te", "vatten", "juice", "mjolk", "choklad", "vill"], it: ["caffe", "te", "acqua", "succo", "latte", "cioccolata", "vorrei"], ja: ["コーヒー", "こーひー", "お茶", "おちゃ", "紅茶", "水", "みず", "ジュース", "ミルク", "ココア", "ください"] },
       },
       {
-        line: { es: "¡Buena elección! ¿Y quieres comer algo? Tenemos croissants y tarta.", fr: "Bon choix ! Et tu veux manger quelque chose ? On a des croissants et de la tarte.", de: "Gute Wahl! Und möchtest du etwas essen? Wir haben Croissants und Kuchen.", en: "Great choice! And would you like something to eat? We have croissants and cake." },
-        tr: "Great choice! And do you want to eat something? We have croissants and cake.",
-        hint: { es: "Un croissant, por favor", fr: "Un croissant, s'il vous plaît", de: "Ein Croissant, bitte", en: "A croissant, please" },
-        expect: { es: ["croissant", "tarta", "nada", "si", "pastel", "quiero"], fr: ["croissant", "tarte", "rien", "oui", "gateau"], de: ["croissant", "kuchen", "nichts", "ja", "bitte"], en: ["croissant", "cake", "nothing", "yes", "please"] },
+        line: { sv: "Bra val! Vill du äta något också? Vi har kanelbullar och tårta.", it: "Ottima scelta! Vuoi anche mangiare qualcosa? Abbiamo cornetti e torta.", ja: "いいですね！何か食べますか？クロワッサンとケーキがありますよ。" },
+        tr: "Great choice! Do you want to eat something too? We have pastries and cake.",
+        hint: { sv: "En kanelbulle, tack", it: "Un cornetto, per favore", ja: "クロワッサンをください" },
+        expect: { sv: ["kanelbulle", "tarta", "inget", "ja", "tack"], it: ["cornetto", "torta", "niente", "si", "favore"], ja: ["クロワッサン", "ケーキ", "何も", "なにも", "はい", "ください"] },
       },
       {
-        line: { es: "¡Perfecto! Son cinco euros. ¡Gracias y que tengas un buen día!", fr: "Parfait ! Ça fait cinq euros. Merci et bonne journée !", de: "Perfekt! Das macht fünf Euro. Danke und einen schönen Tag!", en: "Perfect! That's five euros. Thanks, and have a lovely day!" },
-        tr: "Perfect! That's five euros. Thanks and have a nice day!",
-        hint: { es: "Gracias, ¡adiós!", fr: "Merci, au revoir !", de: "Danke, tschüss!", en: "Thank you, goodbye!" },
-        expect: { es: ["gracias", "adios", "hasta"], fr: ["merci", "au revoir", "salut"], de: ["danke", "tschuss", "tschüss", "wiedersehen"], en: ["thank", "thanks", "bye", "goodbye"] },
+        line: { sv: "Perfekt! Det blir fem euro. Tack och ha en bra dag!", it: "Perfetto! Sono cinque euro. Grazie e buona giornata!", ja: "はい！五百円です。ありがとうございました！良い一日を！" },
+        tr: "Perfect! That'll be five (euros/yen). Thanks and have a nice day!",
+        hint: { sv: "Tack, hej då!", it: "Grazie, arrivederci!", ja: "ありがとう、さようなら！" },
+        expect: { sv: ["tack", "hej da", "hejda", "adjo", "vi ses"], it: ["grazie", "arrivederci", "ciao"], ja: ["ありがとう", "さようなら", "またね", "どうも"] },
       },
     ],
   },
@@ -52,22 +60,22 @@ LINGO.SCENARIOS = [
     unlockStars: 0,
     steps: [
       {
-        line: { es: "¡Fruta fresca! ¡La mejor de la isla! ¿Qué quieres comprar?", fr: "Des fruits frais ! Les meilleurs de l'île ! Qu'est-ce que tu veux acheter ?", de: "Frisches Obst! Das beste der Insel! Was möchtest du kaufen?", en: "Fresh fruit! The best on the island! What do you want to buy?" },
+        line: { sv: "Färsk frukt! Öns bästa! Vad vill du köpa?", it: "Frutta fresca! La migliore dell'isola! Cosa vuoi comprare?", ja: "新鮮なフルーツだよ！島で一番！何を買いますか？" },
         tr: "Fresh fruit! The best on the island! What do you want to buy?",
-        hint: { es: "Quiero dos manzanas", fr: "Je voudrais deux pommes", de: "Ich möchte zwei Äpfel", en: "I want two apples" },
-        expect: { es: ["manzana", "platano", "naranja", "sandia", "uvas", "fresa", "quiero"], fr: ["pomme", "banane", "orange", "pasteque", "raisin", "fraise", "voudrais"], de: ["apfel", "äpfel", "banane", "orange", "melone", "trauben", "erdbeere"], en: ["apple", "banana", "orange", "watermelon", "grape", "strawberry", "want"] },
+        hint: { sv: "Jag skulle vilja ha två äpplen", it: "Vorrei due mele", ja: "りんごを二つください" },
+        expect: { sv: ["apple", "applen", "banan", "apelsin", "vattenmelon", "druvor", "jordgubb", "vill"], it: ["mela", "mele", "banana", "arancia", "anguria", "uva", "fragola", "vorrei"], ja: ["りんご", "リンゴ", "林檎", "バナナ", "オレンジ", "みかん", "スイカ", "すいか", "ぶどう", "いちご", "ください"] },
       },
       {
-        line: { es: "¡Excelente! ¿Algo más? ¡Los plátanos están dulces como el sol!", fr: "Excellent ! Autre chose ? Les bananes sont douces comme le soleil !", de: "Ausgezeichnet! Noch etwas? Die Bananen sind süß wie die Sonne!", en: "Excellent! Anything else? The bananas are as sweet as the sun!" },
-        tr: "Excellent! Anything else? The bananas are sweet like the sun!",
-        hint: { es: "¿Cuánto cuesta?", fr: "Ça coûte combien ?", de: "Wie viel kostet das?", en: "How much is it?" },
-        expect: { es: ["cuanto", "cuesta", "platano", "tambien", "mas", "quiero"], fr: ["combien", "coute", "banane", "aussi", "voudrais"], de: ["viel", "kostet", "banane", "auch", "noch"], en: ["much", "cost", "banana", "also", "more"] },
+        line: { sv: "Utmärkt! Något mer? Bananerna är söta som solen!", it: "Eccellente! Qualcos'altro? Le banane sono dolci come il sole!", ja: "いいね！他には？バナナは太陽みたいに甘いよ！" },
+        tr: "Excellent! Anything else? The bananas are as sweet as the sun!",
+        hint: { sv: "Vad kostar det?", it: "Quanto costa?", ja: "いくらですか？" },
+        expect: { sv: ["kostar", "mycket", "banan", "ocksa", "mer"], it: ["quanto", "costa", "banana", "anche", "altro"], ja: ["いくら", "バナナ", "ほかに", "他に", "もっと"] },
       },
       {
-        line: { es: "Para ti, ¡solo tres euros! ¿Trato hecho?", fr: "Pour toi, seulement trois euros ! Marché conclu ?", de: "Für dich nur drei Euro! Abgemacht?", en: "For you, only three euros! Deal?" },
-        tr: "For you, only three euros! Deal?",
-        hint: { es: "Sí, gracias", fr: "Oui, merci", de: "Ja, danke", en: "Yes, thank you" },
-        expect: { es: ["si", "vale", "gracias", "trato"], fr: ["oui", "d'accord", "daccord", "merci"], de: ["ja", "gut", "danke", "abgemacht"], en: ["yes", "deal", "thanks", "thank", "ok", "okay"] },
+        line: { sv: "För dig, bara tre euro! Har vi en deal?", it: "Per te, solo tre euro! Affare fatto?", ja: "あなたには特別に三百円！どう？" },
+        tr: "For you, only three (euros/yen)! Deal?",
+        hint: { sv: "Ja, tack", it: "Sì, grazie", ja: "はい、ありがとう" },
+        expect: { sv: ["ja", "tack", "okej", "visst", "deal"], it: ["si", "grazie", "bene", "affare"], ja: ["はい", "ありがとう", "いいです", "オーケー", "オッケー"] },
       },
     ],
   },
@@ -78,22 +86,22 @@ LINGO.SCENARIOS = [
     unlockStars: 2,
     steps: [
       {
-        line: { es: "¡Sube, sube! ¿Adónde vamos hoy, amigo?", fr: "Monte, monte ! On va où aujourd'hui, l'ami ?", de: "Steig ein! Wohin fahren wir heute, mein Freund?", en: "Hop in! Where are we going today, my friend?" },
-        tr: "Hop in! Where are we going today, friend?",
-        hint: { es: "A la playa, por favor", fr: "À la plage, s'il vous plaît", de: "Zum Strand, bitte", en: "To the beach, please" },
-        expect: { es: ["playa", "hotel", "mercado", "centro", "puerto"], fr: ["plage", "hotel", "marche", "centre", "port"], de: ["strand", "hotel", "markt", "zentrum", "hafen"], en: ["beach", "hotel", "market", "center", "centre", "port"] },
+        line: { sv: "Hoppa in! Vart ska vi åka idag, kompis?", it: "Sali, sali! Dove andiamo oggi, amico?", ja: "乗って乗って！今日はどこへ行きますか？" },
+        tr: "Hop in! Where are we going today, my friend?",
+        hint: { sv: "Till stranden, tack", it: "Alla spiaggia, per favore", ja: "ビーチまでお願いします" },
+        expect: { sv: ["strand", "hotell", "marknad", "centrum", "hamn"], it: ["spiaggia", "hotel", "albergo", "mercato", "centro", "porto"], ja: ["ビーチ", "海", "うみ", "ホテル", "市場", "いちば", "町", "まち", "港", "みなと"] },
       },
       {
-        line: { es: "¡Buena idea! Hace mucho sol hoy, ¿verdad? ¿Te gusta la isla?", fr: "Bonne idée ! Il fait très beau aujourd'hui, non ? Tu aimes l'île ?", de: "Gute Idee! Heute ist viel Sonne, oder? Gefällt dir die Insel?", en: "Good idea! It's really sunny today, right? Do you like the island?" },
-        tr: "Good idea! It's very sunny today, right? Do you like the island?",
-        hint: { es: "Sí, me gusta mucho", fr: "Oui, j'aime beaucoup", de: "Ja, sie gefällt mir sehr", en: "Yes, I like it a lot" },
-        expect: { es: ["si", "gusta", "mucho", "bonita", "no"], fr: ["oui", "aime", "beaucoup", "belle", "non"], de: ["ja", "gefallt", "gefällt", "schon", "schön", "sehr", "nein"], en: ["yes", "like", "lot", "beautiful", "no"] },
+        line: { sv: "Bra idé! Det är soligt idag, eller hur? Gillar du ön?", it: "Buona idea! C'è tanto sole oggi, vero? Ti piace l'isola?", ja: "いいね！今日はいい天気だね。島は好きですか？" },
+        tr: "Good idea! It's sunny today, right? Do you like the island?",
+        hint: { sv: "Ja, jag gillar den mycket", it: "Sì, mi piace molto", ja: "はい、大好きです" },
+        expect: { sv: ["ja", "gillar", "mycket", "fin", "vacker", "nej"], it: ["si", "piace", "molto", "bella", "no"], ja: ["はい", "好き", "すき", "大好き", "とても", "きれい", "いいえ"] },
       },
       {
-        line: { es: "¡Hemos llegado! Son cuatro euros… ¡o una sonrisa!", fr: "On est arrivés ! Ça fait quatre euros… ou un sourire !", de: "Wir sind da! Das macht vier Euro… oder ein Lächeln!", en: "We're here! That's four euros… or one smile!" },
-        tr: "We've arrived! That's four euros… or a smile!",
-        hint: { es: "Gracias, ¡adiós!", fr: "Merci, au revoir !", de: "Danke, tschüss!", en: "Thanks, goodbye!" },
-        expect: { es: ["gracias", "adios", "toma"], fr: ["merci", "au revoir", "tiens"], de: ["danke", "tschuss", "tschüss", "hier"], en: ["thank", "thanks", "bye", "here"] },
+        line: { sv: "Vi är framme! Det blir fyra euro… eller ett leende!", it: "Siamo arrivati! Sono quattro euro… o un sorriso!", ja: "着きましたよ！四百円です…笑顔でもいいよ！" },
+        tr: "We're here! That's four (euros/yen)… or one smile!",
+        hint: { sv: "Tack, hej då!", it: "Grazie, ciao!", ja: "ありがとう、さようなら！" },
+        expect: { sv: ["tack", "hej da", "hejda", "varsagod"], it: ["grazie", "ciao", "arrivederci", "ecco"], ja: ["ありがとう", "さようなら", "どうぞ", "またね"] },
       },
     ],
   },
@@ -104,60 +112,53 @@ LINGO.SCENARIOS = [
     unlockStars: 4,
     steps: [
       {
-        line: { es: "¡Hola! ¡Qué fiesta tan buena! ¿Cómo te llamas?", fr: "Salut ! Quelle super fête ! Comment tu t'appelles ?", de: "Hallo! Was für eine tolle Party! Wie heißt du?", en: "Hi! What a great party! What's your name?" },
+        line: { sv: "Hej! Vilken fest! Vad heter du?", it: "Ciao! Che bella festa! Come ti chiami?", ja: "こんにちは！すごいパーティーだね！お名前は？" },
         tr: "Hi! What a great party! What's your name?",
-        hint: { es: "Me llamo… ", fr: "Je m'appelle… ", de: "Ich heiße… ", en: "My name is… " },
-        expect: { es: ["me llamo", "soy"], fr: ["m'appelle", "mappelle", "je suis"], de: ["heisse", "heiße", "ich bin"], en: ["my name", "i am", "i'm", "im "] },
+        hint: { sv: "Jag heter… ", it: "Mi chiamo… ", ja: "わたしは…です" },
+        expect: { sv: ["jag heter", "jag ar"], it: ["mi chiamo", "sono"], ja: ["です", "といいます", "申します", "名前"] },
       },
       {
-        line: { es: "¡Encantada! ¿De dónde eres?", fr: "Enchantée ! Tu viens d'où ?", de: "Freut mich! Woher kommst du?", en: "Nice to meet you! Where are you from?" },
+        line: { sv: "Trevligt att träffas! Var kommer du ifrån?", it: "Piacere! Di dove sei?", ja: "はじめまして！どこから来ましたか？" },
         tr: "Nice to meet you! Where are you from?",
-        hint: { es: "Soy de Holanda", fr: "Je viens des Pays-Bas", de: "Ich komme aus den Niederlanden", en: "I'm from the Netherlands" },
-        expect: { es: ["soy de", "vengo de"], fr: ["viens de", "viens des", "je suis de"], de: ["komme aus", "bin aus"], en: ["from"] },
+        hint: { sv: "Jag kommer från Nederländerna", it: "Vengo dai Paesi Bassi", ja: "オランダから来ました" },
+        expect: { sv: ["kommer fran", "ar fran", "fran"], it: ["vengo", "sono di", "dall", "dai"], ja: ["から", "出身", "来ました", "きました"] },
       },
       {
-        line: { es: "¡Qué guay! ¿Quieres bailar conmigo?", fr: "Trop cool ! Tu veux danser avec moi ?", de: "Wie cool! Willst du mit mir tanzen?", en: "So cool! Do you want to dance with me?" },
+        line: { sv: "Vad kul! Vill du dansa med mig?", it: "Che bello! Vuoi ballare con me?", ja: "いいね！一緒に踊りませんか？" },
         tr: "So cool! Do you want to dance with me?",
-        hint: { es: "¡Sí, vamos a bailar!", fr: "Oui, allons danser !", de: "Ja, lass uns tanzen!", en: "Yes, let's dance!" },
-        expect: { es: ["si", "bailar", "vamos", "no"], fr: ["oui", "danser", "allons", "non"], de: ["ja", "tanzen", "lass", "nein"], en: ["yes", "dance", "let", "no"] },
+        hint: { sv: "Ja, vi dansar!", it: "Sì, balliamo!", ja: "はい、踊りましょう！" },
+        expect: { sv: ["ja", "dansa", "garna", "nej"], it: ["si", "ballare", "balliamo", "volentieri", "no"], ja: ["はい", "踊", "おどり", "いいえ"] },
       },
     ],
   },
 ];
 
-/* Mini-game content: short phrases per language (echo = repeat aloud; salad = reorder words). */
+/* Mini-game phrases (echo = repeat aloud; salad = reorder words).
+   Japanese uses spaced words; kanji forms match what speech recognition outputs. */
 LINGO.PHRASES = {
-  es: [
-    { text: "Me gusta mucho la playa", tr: "I really like the beach" },
-    { text: "¿Dónde está el mercado?", tr: "Where is the market?" },
-    { text: "Quiero un zumo de naranja", tr: "I want an orange juice" },
-    { text: "El gato duerme al sol", tr: "The cat sleeps in the sun" },
-    { text: "Mañana vamos a bailar", tr: "Tomorrow we're going to dance" },
-    { text: "La sandía es muy dulce", tr: "The watermelon is very sweet" },
+  sv: [
+    { text: "Jag gillar stranden väldigt mycket", tr: "I like the beach very much" },
+    { text: "Var är marknaden?", tr: "Where is the market?" },
+    { text: "Jag skulle vilja ha en apelsinjuice", tr: "I would like an orange juice" },
+    { text: "Katten sover i solen", tr: "The cat sleeps in the sun" },
+    { text: "Imorgon ska vi dansa", tr: "Tomorrow we're going to dance" },
+    { text: "Vattenmelonen är väldigt söt", tr: "The watermelon is very sweet" },
   ],
-  fr: [
-    { text: "J'aime beaucoup la plage", tr: "I really like the beach" },
-    { text: "Où est le marché ?", tr: "Where is the market?" },
-    { text: "Je voudrais un jus d'orange", tr: "I would like an orange juice" },
-    { text: "Le chat dort au soleil", tr: "The cat sleeps in the sun" },
-    { text: "Demain nous allons danser", tr: "Tomorrow we're going to dance" },
-    { text: "La pastèque est très sucrée", tr: "The watermelon is very sweet" },
+  it: [
+    { text: "Mi piace molto la spiaggia", tr: "I really like the beach" },
+    { text: "Dov'è il mercato?", tr: "Where is the market?" },
+    { text: "Vorrei un succo d'arancia", tr: "I would like an orange juice" },
+    { text: "Il gatto dorme al sole", tr: "The cat sleeps in the sun" },
+    { text: "Domani andiamo a ballare", tr: "Tomorrow we're going dancing" },
+    { text: "L'anguria è molto dolce", tr: "The watermelon is very sweet" },
   ],
-  de: [
-    { text: "Ich mag den Strand sehr", tr: "I really like the beach" },
-    { text: "Wo ist der Markt?", tr: "Where is the market?" },
-    { text: "Ich möchte einen Orangensaft", tr: "I would like an orange juice" },
-    { text: "Die Katze schläft in der Sonne", tr: "The cat sleeps in the sun" },
-    { text: "Morgen gehen wir tanzen", tr: "Tomorrow we're going dancing" },
-    { text: "Die Melone ist sehr süß", tr: "The melon is very sweet" },
-  ],
-  en: [
-    { text: "I really like the beach", tr: "(that's the sentence!)" },
-    { text: "Where is the market?", tr: "(that's the sentence!)" },
-    { text: "I would like an orange juice", tr: "(that's the sentence!)" },
-    { text: "The cat sleeps in the sun", tr: "(that's the sentence!)" },
-    { text: "Tomorrow we are going to dance", tr: "(that's the sentence!)" },
-    { text: "The watermelon is very sweet", tr: "(that's the sentence!)" },
+  ja: [
+    { text: "私 は 海 が 大好き です", tr: "I love the sea" },
+    { text: "市場 は どこ です か", tr: "Where is the market?" },
+    { text: "オレンジジュース を ください", tr: "An orange juice, please" },
+    { text: "猫 は 外 で 寝ます", tr: "The cat sleeps outside" },
+    { text: "明日 一緒 に 踊りましょう", tr: "Let's dance together tomorrow" },
+    { text: "この スイカ は とても 甘い", tr: "This watermelon is very sweet" },
   ],
 };
 
